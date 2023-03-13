@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Delete Employee</title>
+    <!-- Use Bootstrap for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Create a banner -->
+    <div class="jumbotron">
+        <h1 class="display-4">Employee Management System</h1>
+        <p class="lead">Confirm Delete Employee</p>
+    </div>
+<!-- Use a container to center the form -->
+<div class="container">
+    <p>Are you sure you want to delete this employee?</p>
+    <p><strong>Name:</strong> {{ employee[1] }}</p>
+    <p><strong>Email:</strong> {{ employee[2] }}</p>
+    <p><strong>Department:</strong> {{ employee[3] }}</p>
+    <form action="{{ url_for('delete_employee', id=employee[0]) }}" method="post">
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger mr-2">Yes</button>
+            <a href="{{ url_for('get_all') }}" class="btn btn-secondary">No</a>
+        </div>
+    </form>
+</div>
+</body>
+</html> 
