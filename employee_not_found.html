@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Not Found</title>
+    <!-- Use Bootstrap for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Create a banner -->
+    <div class="jumbotron">
+        <h1 class="display-4">Employee Management System</h1>
+        <p class="lead">Employee Not Found</p>
+    </div>
+
+    <!-- Use a container to center the message -->
+    <div class="container">
+        <p>The employee with ID {{ id }} could not be found.</p>
+        <a href="{{ url_for('search_employee') }}" class="btn btn-primary">Back to Search</a>
+    </div>
+</body>
+</html>
+

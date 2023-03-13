@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Employee</title>
+    <!-- Use Bootstrap for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Create a banner -->
+    <div class="jumbotron">
+        <h1 class="display-4">Employee Management System</h1>
+        <p class="lead">Search for an Employee</p>
+    </div>
+
+    <!-- Use a container to center the form -->
+    <div class="container">
+        <form method="post">
+            <div class="form-group">
+                <label for="id">Employee ID:</label>
+                <input type="number" class="form-control" id="id" name="id" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        {% if employee %}
+        <hr>
+        <h2>Employee Details</h2>
+        <p><strong>ID:</strong> {{ employee[0] }}</p>
+        <p><strong>Name:</strong> {{ employee[1] }}</p>
+        <p><strong>Email:</strong> {{ employee[2] }}</p>
+        <p><strong>Department:</strong> {{ employee[3] }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+
