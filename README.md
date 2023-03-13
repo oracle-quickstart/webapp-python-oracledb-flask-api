@@ -20,7 +20,7 @@ The repository also contains several HTML templates that define the app's user i
 #### 1. Clone the Repo
 
 ```
-git clone https://github.com/shadabshaukat/python-flask-demo-oracle.git && cd python-flask-demo-oracle/
+git clone https://github.com/oracle-quickstart/webapp-python-oracledb-flask-api.git && cd webapp-python-oracledb-flask-api/
 
 ```
 
@@ -216,9 +216,9 @@ CREATE TABLE employees (
 ### 4. Clone the Repo & Install Python Packages 
 
 ```
-git clone https://github.com/shadabshaukat/python-flask-demo-oracle.git
+git clone https://github.com/oracle-quickstart/webapp-python-oracledb-flask-api.git
 
-cd python-flask-demo-oracle/
+cd webapp-python-oracledb-flask-api/
 
 pip3 install -r requirements.txt
 
