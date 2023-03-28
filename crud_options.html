@@ -4,6 +4,30 @@
     <title>EMS Main Page</title>
     <!-- Use Bootstrap for styling -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .search-container {
+            position: fixed;
+            top: 20px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container .search-icon {
+            cursor: pointer;
+        }
+
+        .search-container .search-input {
+            display: none;
+            margin-right: 20px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .search-container .search-input.visible {
+            display: block;
+            width: 300px;
+        }
+    </style>
     <script>
         function updateEmployee() {
             var id = prompt("Enter ID:");
@@ -19,15 +43,28 @@
             }
         }
 
+        function toggleSearchBar() {
+            var searchBar = document.querySelector('.search-input');
+            searchBar.classList.toggle('visible');
+            searchBar.focus();
+        }
+
         function searchEmployee() {
-            var id = prompt("Enter ID:");
-            if (id != null) {
-                window.location.href = "/api/search_employee/" + id;
+            var search_query = document.querySelector('.search-input').value;
+            if (search_query) {
+                window.location.href = "/api/search_employee?search_query=" + encodeURIComponent(search_query);
             }
         }
     </script>
 </head>
 <body>
+    <div class="search-container">
+        <span class="search-icon" onclick="toggleSearchBar()">
+            <img src="https://img.icons8.com/small/16/000000/search.png" alt="Search">
+        </span>
+        <input type="text" class="search-input" onkeydown="if (event.key === 'Enter') searchEmployee()" placeholder="Search (ID, Name, Email, or Department)">
+    </div>
+
     <!-- Create a banner -->
     <div class="jumbotron">
         <h1 class="display-4">Employee Management System</h1>
@@ -48,11 +85,6 @@
             </div>
             <div class="col-md-3">
                 <button class="btn btn-primary btn-block" onclick="deleteEmployee()">Delete</button>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-md-3">
-                <button class="btn btn-primary btn-block" onclick="searchEmployee()">Search</button>
             </div>
         </div>
     </div>
