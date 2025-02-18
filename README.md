@@ -255,6 +255,35 @@ This will allow two web pages one for the POST request to the “/api/add_employ
     app.run(host='0.0.0.0', port=4443, ssl_context=('cert.pem', 'key.pem'))
 ```
 
+### 7. If using mTLS, download and configure the ADB wallet files
+
+If mTLS is being used to connect to an ADB instance, then perform this step to configure the wallet on the VM. If using TLS or not connecting to a database that requires a wallet to connnect, then skip to step 8. 
+
+Download the ADB wallet files for the target ADB and unzip in a directory on the VM, and modify the sqlnet.ora within the wallet files to reflect the correct TNS_ADMIN directory. 
+
+```
+WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="/local/directory/wallet")))
+```
+
+Update main.py by uncommenting the lines for **wallet_location** and **wallet_password.**
+
+```
+dsn = os.environ['ORACLE_DSN']
+wallet_location = os.environ['TNS_ADMIN']               <<<<<<
+wallet_password = os.environ['ORACLE_WALLET_PWD']         <<<<<<
+
+..
+
+    pool = oracledb.create_pool(user=user,
+                                   password=password,
+                                   dsn=dsn,
+                                   wallet_location=wallet_location,      <<<<<
+                                   wallet_password=wallet_password,      <<<<<
+
+```
+
+
+
 ### 7. Run the Python script
 
 Set Oracle Database Environment Variables
@@ -262,7 +291,12 @@ Set Oracle Database Environment Variables
 ```
 export ORACLE_USER=admin 
 export ORACLE_PASSWORD=YourPass@word1234#_ 
-export ORACLE_DSN="(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-melbourne-1.oraclecloud.com))(connect_data=(service_name=*****_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))" 
+export ORACLE_DSN="(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-melbourne-1.oraclecloud.com))(connect_data=(service_name=*****_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))"
+
+-- If using the ADB wallet configured in Step 7, include the following parameters:
+export TNS_ADMIN=<location of wallet files>
+export ORACLE_WALLET_PWD=<password of wallet files>
+
 ```
 
 ```
