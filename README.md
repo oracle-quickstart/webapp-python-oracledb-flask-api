@@ -164,14 +164,12 @@ https://127.0.0.1:4443/api/delete_employee/101
 
 ## Oracle Linux VM Deploy 
 
-### 1. Install Python 3.6, flask , cx_Oracle, Jinga2 & six packages on Oracle Linux 7
+### 1. Install Python, flask , cx_Oracle, Jinga2 & six packages on Oracle Linux 7
 
 First pre-requisite is to ensure your instance has Python3 installed along with the Python packages. We will also install the command-line browser links to test the API using a html form.
 
 ```
-  sudo yum install python36
-  sudo yum install links
-  sudo yum install openssl
+  sudo yum install links gcc openssl-devel libffi-devel bzip2-devel wget openssl
 
   sudo pip3 install flask
   sudo pip3 install flask_cors
@@ -181,7 +179,23 @@ First pre-requisite is to ensure your instance has Python3 installed along with 
 ```
 
 ```
-  python3 --version
+  a. Verify latest version of Python
+  Verify the latest version of Python at https://www.python.org/ftp/python/
+  In this case the version to be installed is 3.8.9. 
+
+  b. Download the tar file
+  $ cd /tmp
+  $ wget https://www.python.org/ftp/python/3.8.9/Python-3.8.9.tgz
+  $ tar xzvf Python-3.8.9.tgz -C /opt
+
+  c. Compile and install
+  $ cd Python-3.8.9/
+  $ sudo ./configure --enable-optimizations
+  $ sudo make altinstall
+
+  d. Verify the installation
+  python3.8 --version or python3.8 -V
+
 ```
 
 ### 2. Generate Self-signed certificates and firewall rules
@@ -241,6 +255,35 @@ This will allow two web pages one for the POST request to the “/api/add_employ
     app.run(host='0.0.0.0', port=4443, ssl_context=('cert.pem', 'key.pem'))
 ```
 
+### 7. If using mTLS, download and configure the ADB wallet files
+
+If mTLS is being used to connect to an ADB instance, then perform this step to configure the wallet on the VM. If using TLS or not connecting to a database that requires a wallet to connnect, then skip to step 8. 
+
+Download the ADB wallet files for the target ADB and unzip in a directory on the VM, and modify the sqlnet.ora within the wallet files to reflect the correct TNS_ADMIN directory. 
+
+```
+WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="/local/directory/wallet")))
+```
+
+Update main.py by uncommenting the lines for **wallet_location** and **wallet_password.**
+
+```
+dsn = os.environ['ORACLE_DSN']
+wallet_location = os.environ['TNS_ADMIN']               <<<<<<
+wallet_password = os.environ['ORACLE_WALLET_PWD']         <<<<<<
+
+..
+
+    pool = oracledb.create_pool(user=user,
+                                   password=password,
+                                   dsn=dsn,
+                                   wallet_location=wallet_location,      <<<<<
+                                   wallet_password=wallet_password,      <<<<<
+
+```
+
+
+
 ### 7. Run the Python script
 
 Set Oracle Database Environment Variables
@@ -248,7 +291,12 @@ Set Oracle Database Environment Variables
 ```
 export ORACLE_USER=admin 
 export ORACLE_PASSWORD=YourPass@word1234#_ 
-export ORACLE_DSN="(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-melbourne-1.oraclecloud.com))(connect_data=(service_name=*****_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))" 
+export ORACLE_DSN="(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-melbourne-1.oraclecloud.com))(connect_data=(service_name=*****_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))"
+
+-- If using the ADB wallet configured in Step 7, include the following parameters:
+export TNS_ADMIN=<location of wallet files>
+export ORACLE_WALLET_PWD=<password of wallet files>
+
 ```
 
 ```

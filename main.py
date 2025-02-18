@@ -28,6 +28,8 @@ import oracledb
 user = os.environ['ORACLE_USER']
 password = os.environ['ORACLE_PASSWORD']
 dsn = os.environ['ORACLE_DSN']
+# wallet_location = os.environ['TNS_ADMIN']
+# wallet_password = os.environ['ORACLE_PASSWORD']
 
 # start_pool(): starts the connection pool
 def start_pool():
@@ -43,6 +45,8 @@ def start_pool():
     pool = oracledb.create_pool(user=user,
                                    password=password,
                                    dsn=dsn,
+#                                  wallet_location=wallet_location,
+#                                  wallet_password=wallet_password,
                                    min=pool_min,
                                    max=pool_max,
                                    increment=pool_inc)
