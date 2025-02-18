@@ -164,14 +164,12 @@ https://127.0.0.1:4443/api/delete_employee/101
 
 ## Oracle Linux VM Deploy 
 
-### 1. Install Python 3.6, flask , cx_Oracle, Jinga2 & six packages on Oracle Linux 7
+### 1. Install Python, flask , cx_Oracle, Jinga2 & six packages on Oracle Linux 7
 
 First pre-requisite is to ensure your instance has Python3 installed along with the Python packages. We will also install the command-line browser links to test the API using a html form.
 
 ```
-  sudo yum install python36
-  sudo yum install links
-  sudo yum install openssl
+  sudo yum install links gcc openssl-devel libffi-devel bzip2-devel wget openssl
 
   sudo pip3 install flask
   sudo pip3 install flask_cors
@@ -181,7 +179,23 @@ First pre-requisite is to ensure your instance has Python3 installed along with 
 ```
 
 ```
-  python3 --version
+  a. Verify latest version of Python
+  Verify the latest version of Python at https://www.python.org/ftp/python/
+  In this case the version to be installed is 3.8.9. 
+
+  b. Download the tar file
+  $ cd /tmp
+  $ wget https://www.python.org/ftp/python/3.8.9/Python-3.8.9.tgz
+  $ tar xzvf Python-3.8.9.tgz -C /opt
+
+  c. Compile and install
+  $ cd Python-3.8.9/
+  $ sudo ./configure --enable-optimizations
+  $ sudo make altinstall
+
+  d. Verify the installation
+  python3.8 --version or python3.8 -V
+
 ```
 
 ### 2. Generate Self-signed certificates and firewall rules
