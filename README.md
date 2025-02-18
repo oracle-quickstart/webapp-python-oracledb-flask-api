@@ -164,7 +164,7 @@ https://127.0.0.1:4443/api/delete_employee/101
 
 ## Oracle Linux VM Deploy 
 
-### 1. Install Python, flask , cx_Oracle, Jinga2 & six packages on Oracle Linux 7
+### 1. Install Python, flask , cx_Oracle, Jinga2 & six packages on Oracle Linux 8
 
 First pre-requisite is to ensure your instance has Python3 installed along with the Python packages. We will also install the command-line browser links to test the API using a html form.
 
